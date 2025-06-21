@@ -16,18 +16,13 @@ import {
   AlertCircle
 } from 'lucide-react';
 
-// Updated types for API responses - fixing the preview structure
-interface PreviewChunk {
-  text: string;
-  tokens: number;
-}
-
+// Types for API responses
 interface ProcessingResult {
   message: string;
   filename: string;
   chunks?: number;
   total_tokens?: number;
-  preview?: PreviewChunk[]; // Changed from string[] to PreviewChunk[]
+  preview?: string[];
   error?: string;
   status?: string;
 }
@@ -117,16 +112,16 @@ const WolfstitchApp = () => {
     }
   };
 
-  // Download functionality - Fixed to handle the new preview structure
+  // Download functionality
   const downloadResults = () => {
     if (!processingResult) return;
 
-    // Create JSONL content from the preview chunks
+    // Create JSONL content
     const jsonlContent = processingResult.preview?.map((chunk, index) => 
       JSON.stringify({
-        text: chunk.text, // Extract text from the chunk object
+        text: chunk,
         chunk_id: index + 1,
-        tokens: chunk.tokens, // Use actual token count from chunk
+        tokens: Math.floor((processingResult.total_tokens || 131) / (processingResult.chunks || 1)),
         metadata: {
           filename: processingResult.filename,
           processed_at: new Date().toISOString()
@@ -207,126 +202,129 @@ const WolfstitchApp = () => {
   };
 
   // Circular progress component
-  const CircularProgress = ({ percentage, size = 140 }: { percentage: number; size?: number }) => {
-    const radius = (size - 16) / 2;
-    const circumference = radius * 2 * Math.PI;
-    const strokeDasharray = `${circumference} ${circumference}`;
-    const strokeDashoffset = circumference - (percentage / 100) * circumference;
-
-    return (
-      <div className="relative" style={{ width: size, height: size }}>
-        {/* Background circle */}
-        <svg
-          className="transform -rotate-90"
-          width={size}
-          height={size}
-        >
-          <circle
-            cx={size / 2}
-            cy={size / 2}
-            r={radius}
-            stroke="rgba(75, 85, 99, 0.3)"
-            strokeWidth="8"
-            fill="transparent"
-          />
-          {/* Progress circle */}
-          <circle
-            cx={size / 2}
-            cy={size / 2}
-            r={radius}
-            stroke="url(#gradient)"
-            strokeWidth="8"
-            fill="transparent"
-            strokeDasharray={strokeDasharray}
-            strokeDashoffset={strokeDashoffset}
-            strokeLinecap="round"
-            className="transition-all duration-300 ease-in-out"
-          />
-          {/* Gradient definition */}
-          <defs>
-            <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#FF6B47" />
-              <stop offset="100%" stopColor="#4ECDC4" />
-            </linearGradient>
-          </defs>
-        </svg>
-        {/* Percentage text */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-2xl font-bold text-white">
-            {Math.round(percentage)}%
-          </span>
-        </div>
+  const CircularProgress = ({ percentage, size = 140 }: { percentage: number; size?: number }) => (
+    <div className="relative inline-flex items-center justify-center">
+      <svg
+        className="transform -rotate-90"
+        width={size}
+        height={size}
+      >
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={size / 2 - 8}
+          stroke="currentColor"
+          strokeWidth="6"
+          fill="transparent"
+          className="text-gray-700"
+        />
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={size / 2 - 8}
+          stroke="currentColor"
+          strokeWidth="6"
+          fill="transparent"
+          strokeDasharray={`${2 * Math.PI * (size / 2 - 8)}`}
+          strokeDashoffset={`${2 * Math.PI * (size / 2 - 8) * (1 - percentage / 100)}`}
+          className="text-[#FF6B47] transition-all duration-500 ease-out"
+          strokeLinecap="round"
+        />
+      </svg>
+      <div className="absolute flex flex-col items-center">
+        <span className="text-3xl font-bold text-white">
+          {Math.round(percentage)}%
+        </span>
+        <span className="text-xs text-gray-300 mt-1">
+          {percentage < 30 && "Parsing"}
+          {percentage >= 30 && percentage < 70 && "Cleaning"}
+          {percentage >= 70 && "Chunking"}
+        </span>
       </div>
-    );
-  };
+    </div>
+  );
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-[#1a1a2e] via-[#16213e] to-[#0f1419]">
       {/* Header */}
-      <header className="bg-black/20 backdrop-blur-sm border-b border-gray-700 sticky top-0 z-40">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-gradient-to-r from-[#FF6B47] to-[#4ECDC4] rounded-lg flex items-center justify-center">
-                <Zap className="w-5 h-5 text-white" />
-              </div>
+      <header className="bg-[rgba(26,26,46,0.8)] border-b border-gray-700 px-6 py-4">
+        <div className="max-w-6xl mx-auto flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 bg-gradient-to-br from-[#FF6B47] to-[#E85555] rounded-lg flex items-center justify-center shadow-lg">
+              <div className="w-6 h-6 border-2 border-white rounded transform rotate-12 opacity-90"></div>
+            </div>
+            <div>
               <h1 className="text-xl font-bold text-white">{APP_NAME}</h1>
+              <p className="text-xs text-gray-400">AI Dataset Platform</p>
             </div>
-            <div className="flex items-center space-x-4">
-              <div className="hidden sm:flex items-center space-x-2 text-sm text-gray-300">
-                <Activity className="w-4 h-4 text-[#4ECDC4]" />
-                <span>Status: Online</span>
-              </div>
-              {ENVIRONMENT === 'development' && (
-                <div className="px-2 py-1 bg-yellow-500/20 border border-yellow-500/50 rounded text-xs text-yellow-300">
-                  DEV
-                </div>
-              )}
+          </div>
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2">
+              <Activity className="w-4 h-4 text-[#4ECDC4]" />
+              <span className="text-sm text-gray-300">
+                {ENVIRONMENT === 'production' ? 'Production Ready' : 'Development Mode'}
+              </span>
             </div>
+            <div className="w-2 h-2 bg-[#4ECDC4] rounded-full animate-pulse"></div>
           </div>
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Upload Section */}
-        {processingStep === 'upload' && (
-          <section className="text-center space-y-8">
-            <div className="space-y-4">
-              <h2 className="text-4xl sm:text-5xl font-bold text-white leading-tight">
-                Transform Documents into
-                <span className="bg-gradient-to-r from-[#FF6B47] to-[#4ECDC4] bg-clip-text text-transparent"> AI Training Data</span>
-              </h2>
-              <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-                Upload any document and get perfectly chunked, tokenized JSONL files ready for machine learning.
+      <div className="max-w-5xl mx-auto px-6 py-8 space-y-8">
+        
+        {/* Hero Section */}
+        <section className="text-center space-y-4 py-8">
+          <h2 className="text-4xl font-bold text-white mb-2">
+            Transform Documents into 
+            <span className="bg-gradient-to-r from-[#FF6B47] to-[#4ECDC4] bg-clip-text text-transparent"> AI-Ready Datasets</span>
+          </h2>
+          <p className="text-gray-300 text-lg max-w-2xl mx-auto">
+            Professional-grade document processing with intelligent chunking, 40+ file formats, and beautiful export options
+          </p>
+          {ENVIRONMENT === 'development' && (
+            <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-3 mx-auto max-w-md">
+              <p className="text-yellow-300 text-sm">
+                🚧 Development Mode - API: {API_BASE_URL}
               </p>
             </div>
+          )}
+        </section>
 
-            {/* Upload Area */}
-            <div
-              className="relative border-2 border-dashed border-gray-600 hover:border-[#4ECDC4] rounded-2xl p-12 transition-colors duration-300 cursor-pointer bg-[rgba(255,255,255,0.02)] hover:bg-[rgba(255,255,255,0.05)]"
+        {/* Upload Section */}
+        {processingStep === 'upload' && (
+          <section className="space-y-6">
+            <div 
+              className="relative border-2 border-dashed border-[#FF6B47] bg-[rgba(255,107,71,0.1)] hover:bg-[rgba(255,107,71,0.15)] rounded-2xl p-12 text-center transition-all duration-300 cursor-pointer shadow-lg shadow-[rgba(255,107,71,0.2)]"
+              onClick={() => fileInputRef.current?.click()}
               onDrop={handleDrop}
               onDragOver={handleDragOver}
-              onClick={() => fileInputRef.current?.click()}
             >
               <input
                 ref={fileInputRef}
                 type="file"
-                className="hidden"
+                multiple
                 onChange={handleFileSelect}
-                accept=".pdf,.docx,.doc,.txt,.md,.html,.csv,.json,.xlsx,.xls,.pptx,.ppt"
+                className="hidden"
+                accept=".pdf,.docx,.txt,.md,.py,.js,.json,.csv,.pptx,.xlsx"
               />
-              
               <div className="space-y-6">
-                <div className="w-20 h-20 bg-gradient-to-r from-[#FF6B47] to-[#4ECDC4] rounded-full flex items-center justify-center mx-auto">
+                <div className="mx-auto w-20 h-20 bg-gradient-to-br from-[#FF6B47] to-[#E85555] rounded-full flex items-center justify-center shadow-xl">
                   <Upload className="w-10 h-10 text-white" />
                 </div>
-                
                 <div>
-                  <h3 className="text-2xl font-semibold text-white mb-2">
-                    Upload Your Document
-                  </h3>
-                  <p className="text-gray-400">
+                  <p className="text-2xl font-bold text-white mb-2">
+                    Drop files here or click to browse
+                  </p>
+                  <p className="text-gray-300">
+                    PDF, DOCX, TXT, code files, presentations, or entire folders
+                  </p>
+                </div>
+                <div className="space-y-4">
+                  <button className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-[#FF6B47] to-[#E85555] text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-[rgba(255,107,71,0.3)] transition-all duration-300 transform hover:scale-105">
+                    <Upload className="w-5 h-5 mr-2" />
+                    Choose Files
+                  </button>
+                  <p className="text-sm text-gray-400">
                     or drag and drop your documents here
                   </p>
                 </div>
@@ -415,7 +413,7 @@ const WolfstitchApp = () => {
                 </div>
               </div>
 
-              {/* Preview - Fixed to handle new structure */}
+              {/* Preview */}
               {processingResult.preview && processingResult.preview.length > 0 && (
                 <div className="bg-gray-800/50 rounded-xl p-6 mb-8 border border-gray-600">
                   <h4 className="font-semibold text-white mb-4 flex items-center">
@@ -426,11 +424,10 @@ const WolfstitchApp = () => {
                     {processingResult.preview.slice(0, 3).map((chunk, index) => (
                       <div key={index} className="bg-gray-900 rounded-lg border border-gray-700 p-4">
                         <div className="font-mono text-sm text-gray-300 leading-relaxed">
-                          {chunk.text} {/* Extract text from chunk object */}
+                          {chunk}
                         </div>
-                        <div className="mt-2 text-xs text-gray-500 flex justify-between">
-                          <span>Chunk {index + 1}</span>
-                          <span>{chunk.tokens} tokens</span> {/* Show actual token count */}
+                        <div className="mt-2 text-xs text-gray-500">
+                          Chunk {index + 1}
                         </div>
                       </div>
                     ))}
@@ -441,32 +438,60 @@ const WolfstitchApp = () => {
               {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <button
-                  onClick={downloadResults}
-                  className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-[#4ECDC4] to-[#45B7B8] text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-[rgba(78,205,196,0.3)] transition-all duration-300 transform hover:scale-105"
-                >
-                  <Download className="w-5 h-5 mr-2" />
-                  Download JSONL
-                </button>
-                <button
                   onClick={resetApp}
                   className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-[#FF6B47] to-[#E85555] text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-[rgba(255,107,71,0.3)] transition-all duration-300 transform hover:scale-105"
                 >
-                  Process Another File
+                  <Zap className="w-5 h-5 mr-2" />
+                  Process More Files
+                </button>
+                <button 
+                  onClick={downloadResults}
+                  className="inline-flex items-center px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-xl font-medium transition-colors"
+                >
+                  <Download className="w-5 h-5 mr-2" />
+                  Download Results
                 </button>
               </div>
             </div>
           </section>
         )}
-      </main>
 
-      {/* Footer */}
-      <footer className="bg-black/20 border-t border-gray-700 mt-20">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="text-center text-gray-400">
-            <p>© 2025 {APP_NAME}. Transforming documents into AI training data.</p>
-          </div>
-        </div>
-      </footer>
+        {/* File Details Section */}
+        {selectedFiles.length > 0 && processingStep !== 'upload' && (
+          <section className="space-y-4">
+            <div className="bg-[rgba(255,255,255,0.05)] backdrop-blur-sm rounded-2xl shadow-xl border border-gray-700 p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-xl font-bold text-white flex items-center">
+                  <Folder className="w-5 h-5 mr-2 text-[#4ECDC4]" />
+                  Selected Files ({selectedFiles.length})
+                </h3>
+                <button 
+                  onClick={() => setShowFileDetails(!showFileDetails)}
+                  className="flex items-center px-3 py-2 bg-gray-700 hover:bg-gray-600 text-gray-300 hover:text-white rounded-lg transition-all duration-200 text-sm"
+                >
+                  <Eye className="w-4 h-4 mr-2" />
+                  {showFileDetails ? 'Hide' : 'Show'} Details
+                  <ChevronDown className={`w-4 h-4 ml-2 transition-transform duration-200 ${showFileDetails ? 'rotate-180' : ''}`} />
+                </button>
+              </div>
+              
+              {showFileDetails && (
+                <div className="space-y-2">
+                  {selectedFiles.map((file, index) => (
+                    <div key={index} className="flex items-center justify-between p-3 bg-gray-800/50 rounded-lg border border-gray-600">
+                      <div className="flex items-center space-x-3">
+                        {getFileIcon(file.name)}
+                        <span className="font-medium text-white">{file.name}</span>
+                      </div>
+                      <span className="text-sm text-gray-400">{formatFileSize(file.size)}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </section>
+        )}
+      </div>
     </div>
   );
 };
