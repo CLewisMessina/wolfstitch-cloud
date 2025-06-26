@@ -1,93 +1,37 @@
-# 🧠 Wolfstitch Cloud - AI Dataset Preparation Platform
+# Wolfstitch Cloud 🚀
 
-**Transform any document into AI-ready training data in seconds.**
+**AI-Powered Dataset Preparation Platform**  
+*Transform any document into AI training data in seconds*
 
-[![Production Status](https://img.shields.io/badge/Status-Live%20Production-brightgreen)](https://wolfstitch.dev)
-[![API Health](https://img.shields.io/badge/API-Operational-success)](https://api.wolfstitch.dev/health)
-[![Railway Deployment](https://img.shields.io/badge/Deployed%20on-Railway-blueviolet)](https://railway.app)
-[![License](https://img.shields.io/badge/License-MIT-blue)](LICENSE)
-
----
-
-## 🌟 **Live Platform**
-
-**🔗 [wolfstitch.dev](https://wolfstitch.dev)** - Start processing files immediately  
-**📡 [API Documentation](https://api.wolfstitch.dev/docs)** - Complete API reference  
-**❤️ [Health Status](https://api.wolfstitch.dev/health)** - System monitoring
+[![Production Status](https://img.shields.io/badge/Status-Production%20Live-brightgreen)](https://wolfstitch.dev)
+[![API Health](https://img.shields.io/badge/API-Healthy-brightgreen)](https://api.wolfstitch.dev/health)
+[![Version](https://img.shields.io/badge/Version-1.0.0-blue)](https://github.com/CLewisMessina/wolfstitch-cloud-dev)
+[![License](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
 
 ---
 
-## ✨ **What is Wolfstitch Cloud?**
+## 🌟 **What is Wolfstitch Cloud?**
 
-Wolfstitch Cloud is a powerful, production-ready platform that transforms documents into AI-training datasets. Upload any file, get back perfectly chunked, tokenized data ready for machine learning pipelines.
+Wolfstitch Cloud is the **premier platform for preparing AI training datasets** from documents. Convert PDFs, Word docs, presentations, and 40+ other formats into perfectly chunked, tokenized JSONL files ready for machine learning pipelines.
 
-### **🎯 Perfect For:**
-- **AI/ML Engineers** preparing training datasets
-- **Data Scientists** processing research documents
-- **Developers** building AI applications
-- **Businesses** creating custom AI models
+**🔥 Now Live**: [**wolfstitch.dev**](https://wolfstitch.dev)
 
----
-
-## 🚀 **Key Features**
-
-### **📄 Universal Document Support**
-- **40+ File Formats**: PDF, DOCX, TXT, XLSX, CSV, HTML, MD, EPUB, and more
-- **Smart Text Extraction**: Advanced parsing preserves document structure
-- **Content Preservation**: Maintains formatting and context
-
-### **🧠 Intelligent Chunking**
-- **Semantic Boundaries**: Splits at logical content breaks
-- **Configurable Size**: Optimized for AI model context windows
-- **Token Accuracy**: Precise GPT-4 compatible token counting
-- **Metadata Rich**: Timestamps, filenames, and processing details
-
-### **⚡ Production Performance**
-- **Lightning Fast**: Process 1MB files in under 10 seconds
-- **Scalable**: Cloud-native architecture handles any volume
-- **99.9% Uptime**: Enterprise-grade reliability
-- **Global CDN**: Fast access worldwide
-
-### **🔒 Enterprise Security**
-- **HTTPS Everywhere**: End-to-end encryption
-- **No Data Storage**: Files processed and discarded immediately
-- **Privacy First**: Your data never leaves the processing pipeline
-- **Compliance Ready**: SOC 2 compatible infrastructure
+### **Key Features**
+- **📄 Universal Document Support**: PDF, DOCX, XLSX, PPT, TXT, HTML, MD, EPUB, and more
+- **🧠 Intelligent Chunking**: Context-aware text segmentation with semantic boundaries
+- **⚡ Lightning Fast**: Process documents in under 10 seconds
+- **🎯 AI-Ready Output**: GPT-4 compatible tokenization and JSONL export
+- **🛡️ Privacy First**: Zero data retention, end-to-end encryption
+- **📱 Universal Access**: Works on any device with modern web browser
 
 ---
 
-## 📊 **Live Demo Results**
-
-### **Input Document Types Tested:**
-```
-✅ Academic Research Papers     → 1-2 chunks, 800+ tokens each
-✅ Business Strategy Documents  → 2-3 chunks, 500-600 tokens each  
-✅ Legal Agreements            → 2-4 chunks, 700-900 tokens each
-✅ Technical Documentation     → Variable chunks, optimized sizing
-✅ Financial Reports           → Table-aware chunking
-```
-
-### **Output Quality:**
-```json
-{
-  "text": "# Advanced Neural Network Architectures...",
-  "chunk_id": 1,
-  "tokens": 820,
-  "metadata": {
-    "filename": "research_paper.pdf",
-    "processed_at": "2025-06-20T21:58:36.198Z"
-  }
-}
-```
-
----
-
-## 🛠️ **How to Use**
+## 🚀 **Quick Start**
 
 ### **🌐 Web Interface**
 1. **Visit [wolfstitch.dev](https://wolfstitch.dev)**
 2. **Upload your document** (drag & drop or click)
-3. **Wait for processing** (usually < 30 seconds)
+3. **Configure chunking** (optional - smart defaults provided)
 4. **Download JSONL results** (ready for AI training)
 
 ### **🔌 API Integration**
@@ -103,14 +47,19 @@ curl -X POST "https://api.wolfstitch.dev/api/v1/quick-process" \
 ```json
 {
   "message": "File processed successfully",
-  "filename": "your-document.pdf",
+  "filename": "your-document.pdf", 
   "chunks": 3,
   "total_tokens": 2019,
   "average_chunk_size": 673,
+  "processing_time": 2.3,
   "preview": [
     {
       "text": "Document content preview...",
-      "tokens": 820
+      "tokens": 820,
+      "metadata": {
+        "chunk_id": 1,
+        "timestamp": "2025-06-25T10:30:00Z"
+      }
     }
   ]
 }
@@ -118,198 +67,322 @@ curl -X POST "https://api.wolfstitch.dev/api/v1/quick-process" \
 
 ---
 
-## 🏗️ **Architecture**
+## 🏗️ **Architecture & Technology Stack**
 
-### **Frontend (Next.js 15)**
-- **Modern React** with TypeScript
-- **Tailwind CSS** design system
-- **Mobile-first** responsive design
-- **Real-time processing** status
+### **Production Infrastructure**
+```
+┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
+│   Cloudflare    │    │   Railway Cloud  │    │   PostgreSQL   │
+│   (Global CDN)  │────│   (Auto-scaling) │────│   + Redis       │
+└─────────────────┘    └──────────────────┘    └─────────────────┘
+         │                       │                       │
+         ▼                       ▼                       ▼
+┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
+│  wolfstitch.dev │    │   Next.js 15     │    │   FastAPI       │
+│  (SSL + CNAME)  │    │   TypeScript     │    │   + Wolfcore    │
+└─────────────────┘    └──────────────────┘    └─────────────────┘
+```
 
-### **Backend (FastAPI + Python)**
-- **Wolfcore Library** for document processing
-- **Railway Cloud** deployment
-- **PostgreSQL + Redis** for scaling
-- **Graceful error handling** and logging
+### **Core Technologies**
+- **Frontend**: Next.js 15 + TypeScript + Tailwind CSS + shadcn/ui
+- **Backend**: FastAPI + Python + Wolfcore Library
+- **Infrastructure**: Railway Cloud + Cloudflare CDN + GoDaddy DNS
+- **Database**: PostgreSQL + Redis (scaling ready)
+- **Deployment**: GitHub CI/CD with auto-deploy
 
-### **Infrastructure**
-- **Cloudflare CDN** for global performance
-- **Custom domain** with SSL certificates
-- **Auto-scaling** based on demand
-- **Health monitoring** and alerting
+### **Domain & Service Architecture**
+Based on current infrastructure mapping:
+
+| Service | Domain | Purpose | Status |
+|---------|--------|---------|--------|
+| **Production Frontend** | wolfstitch.dev | Main user interface | ✅ Live |
+| **Production API** | api.wolfstitch.dev | Document processing API | ✅ Live |
+| **Staging Frontend** | staging.wolfstitch.dev | Development testing | ✅ Active |
+| **Staging API** | api-dev.wolfstitch.dev | API development | ✅ Active |
 
 ---
 
-## 📈 **Performance Metrics**
+## 📈 **Performance & Capabilities**
 
-| Metric | Value |
-|--------|-------|
-| **Processing Speed** | < 10 seconds for 1MB files |
-| **Supported Formats** | 40+ document types |
-| **API Uptime** | 99.9%+ |
-| **Max File Size** | 100MB |
-| **Token Accuracy** | GPT-4 compatible |
-| **Global Latency** | < 200ms (CDN optimized) |
+| Metric | Value | Details |
+|--------|-------|---------|
+| **Processing Speed** | < 10 seconds | For typical 1-5MB documents |
+| **Supported Formats** | 40+ file types | PDF, Office, Web, Text, Data |
+| **Max File Size** | 100MB | Enterprise-grade capacity |
+| **API Uptime** | 99.9%+ | Production SLA with monitoring |
+| **Token Accuracy** | GPT-4 compatible | Precise tokenization |
+| **Global Latency** | < 200ms | Cloudflare CDN optimized |
+| **Concurrent Users** | Auto-scaling | Railway infrastructure |
+| **Data Security** | Zero retention | Files processed and discarded |
 
 ---
 
-## 🔧 **Development**
+## 🛠️ **Development**
 
 ### **Prerequisites**
-- Node.js 18+
-- Python 3.9+
-- Git
+- Node.js 18+ and npm/yarn
+- Python 3.9+ and pip
+- Git for version control
 
-### **Local Setup**
+### **Local Development Setup**
 ```bash
-# Clone repository
+# 1. Clone the repository
 git clone https://github.com/CLewisMessina/wolfstitch-cloud-dev.git
 cd wolfstitch-cloud-dev
 
-# Frontend development
+# 2. Frontend development
 cd frontend
 npm install
 npm run dev  # → http://localhost:3000
 
-# Backend development (optional - API is live)
+# 3. Backend development (optional - API is live)
+cd ../backend
 pip install -r requirements.txt
-uvicorn backend.main:app --reload  # → http://localhost:8000
+uvicorn main:app --reload  # → http://localhost:8000
+
+# 4. Environment setup
+cp .env.example .env.local  # Configure environment variables
 ```
 
-### **Environment Variables**
+### **Environment Configuration**
 ```bash
 # Frontend (.env.local)
 NEXT_PUBLIC_API_URL=https://api.wolfstitch.dev
 NEXT_PUBLIC_ENVIRONMENT=production
+NEXT_PUBLIC_APP_NAME=Wolfstitch
 
-# Backend (Railway managed)
+# Backend (Railway managed in production)
 ENVIRONMENT=production
 DATABASE_URL=[auto-configured]
 REDIS_URL=[auto-configured]
+SECRET_KEY=[secure-key]
+ALLOWED_HOSTS=api.wolfstitch.dev,localhost
+```
+
+### **Project Structure**
+```
+wolfstitch-cloud-dev/
+├── frontend/                 # Next.js application
+│   ├── src/app/             # App router pages  
+│   ├── src/components/      # React components
+│   ├── src/lib/            # Utilities and hooks
+│   └── package.json        # Frontend dependencies
+├── backend/                 # FastAPI application
+│   ├── main.py             # API server entry point
+│   ├── models/             # Data models and schemas
+│   ├── api/                # API route handlers
+│   └── requirements.txt    # Python dependencies
+├── wolfcore/               # Core processing library
+│   ├── __init__.py         # Library interface
+│   ├── parsers.py          # Document parsing
+│   ├── chunker.py          # Text chunking
+│   └── processor.py        # Main processing engine
+└── docs/                   # Project documentation
 ```
 
 ---
 
-## 🧪 **Testing**
+## 🧪 **Testing & Quality Assurance**
 
 ### **Automated Testing**
 ```bash
-# Run validation script
+# System validation
 python setup_railway.py
 
-# Frontend tests
+# Frontend tests  
 cd frontend && npm test
 
 # Backend tests
 pytest backend/tests/
+
+# API integration tests
+python backend/test_api.py
 ```
 
-### **Manual Testing**
-1. Upload test documents from `/test-files/`
-2. Verify chunking quality and token accuracy
-3. Test download functionality
-4. Check error handling with invalid files
+### **Manual Testing Checklist**
+- [ ] Upload various document formats (PDF, DOCX, TXT, etc.)
+- [ ] Verify chunking quality and token accuracy  
+- [ ] Test download functionality and JSONL format
+- [ ] Check error handling with invalid/corrupted files
+- [ ] Validate processing speed and resource usage
+- [ ] Test mobile responsiveness and accessibility
+
+### **Performance Monitoring**
+- **Health Check**: [api.wolfstitch.dev/health](https://api.wolfstitch.dev/health)
+- **API Documentation**: [api.wolfstitch.dev/docs](https://api.wolfstitch.dev/docs)
+- **System Metrics**: Real-time monitoring via Railway dashboard
+- **Error Tracking**: Comprehensive logging and alerting
 
 ---
 
-## 🚀 **Deployment**
+## 🚀 **Deployment & Operations**
 
-### **Production Stack**
-- **Frontend**: Railway (gentle-unity service)
-- **Backend**: Railway (wolfstitch-cloud-dev service)
-- **Database**: Railway PostgreSQL
-- **Cache**: Railway Redis
-- **DNS**: Cloudflare
-- **Domain**: GoDaddy registration
+### **Production Deployment**
+**Wolfstitch Cloud runs on Railway with full CI/CD automation:**
 
-### **Continuous Deployment**
-- **GitHub Integration**: Auto-deploy on push to main
-- **Build Validation**: Automated testing pipeline
-- **Health Checks**: Monitoring and alerting
-- **Rollback**: Instant revert capability
+- **Auto-deployment**: Push to `main` branch triggers production deploy
+- **Health monitoring**: Automated health checks and alerting  
+- **Scaling**: Auto-scaling based on demand
+- **SSL/TLS**: Automatic certificate management via Cloudflare
+- **Backups**: Database backups and point-in-time recovery
+
+### **Infrastructure Services**
+```bash
+# Production Services (Railway)
+├── Frontend: 9okkzok6.up.railway.app → wolfstitch.dev
+├── Backend: 9u9jyp65.up.railway.app → api.wolfstitch.dev  
+├── Database: PostgreSQL (managed)
+└── Cache: Redis (managed)
+
+# Staging Services (Railway)  
+├── Frontend: hdxldm16.up.railway.app → staging.wolfstitch.dev
+├── Backend: qmtm3lpm.up.railway.app → api-dev.wolfstitch.dev
+├── Database: PostgreSQL (staging)
+└── Cache: Redis (staging)
+```
+
+### **Monitoring & Analytics**
+- **Uptime Monitoring**: 99.9% SLA with instant alerts
+- **Performance Metrics**: Response times, throughput, error rates
+- **Usage Analytics**: Document processing volume and success rates
+- **Security Monitoring**: Access logs and anomaly detection
 
 ---
 
-## 📊 **Monitoring & Analytics**
+## 🎯 **Roadmap & Future Development**
 
-### **Health Endpoints**
-- **API Health**: [/health](https://api.wolfstitch.dev/health)
-- **System Status**: Real-time metrics
-- **Performance Monitoring**: Response times and throughput
+### **Phase 3: User Management & Monetization (Current Priority)**
+**Timeline**: July 2025
 
-### **Usage Analytics**
-- Processing volume and success rates
-- File type distribution
-- Performance benchmarks
-- Error tracking and resolution
+- [ ] **User Authentication**: Clerk integration with social auth
+- [ ] **Subscription Tiers**: Free, Pro, Team, Enterprise  
+- [ ] **Payment Processing**: Stripe integration with billing portal
+- [ ] **Usage Tracking**: Comprehensive analytics and limits
+- [ ] **Customer Dashboard**: Account management and usage insights
+
+### **Phase 4: Advanced Features (Q3 2025)**
+- [ ] **Batch Processing**: Multiple file upload and parallel processing
+- [ ] **Custom Chunking**: User-configurable chunk size and overlap strategies
+- [ ] **Export Formats**: CSV, TXT, XML, and custom format options
+- [ ] **API Keys**: Secure programmatic access with rate limiting
+- [ ] **Webhook Integration**: Real-time processing notifications
+
+### **Phase 5: Enterprise & AI Enhancement (Q4 2025)**
+- [ ] **Team Collaboration**: Shared workspaces and project management
+- [ ] **AI-Powered Features**: Semantic chunking and quality scoring
+- [ ] **Advanced Analytics**: Detailed processing insights and optimization
+- [ ] **Enterprise SSO**: SAML, LDAP, and custom authentication
+- [ ] **White-label Solutions**: Custom branding and deployment options
+
+### **Phase 6: Platform Expansion (2026)**
+- [ ] **API Marketplace**: Third-party integrations and extensions
+- [ ] **Custom Models**: Support for specialized tokenizers and models
+- [ ] **Workflow Automation**: Scheduled processing and data pipelines
+- [ ] **International Expansion**: Multi-language support and localization
+- [ ] **Enterprise Platform**: Advanced features for large organizations
+
+---
+
+## 📊 **Current Status & Metrics**
+
+### **Production Statistics** *(as of June 25, 2025)*
+- **🚀 Status**: Production live and stable
+- **⏱️ Uptime**: 99.9%+ since launch
+- **📈 Growth**: 6-8 weeks ahead of original roadmap
+- **🔧 Infrastructure**: Auto-scaling Railway deployment  
+- **🛡️ Security**: End-to-end encryption, zero data retention
+- **🌍 Global**: Cloudflare CDN for worldwide performance
+
+### **Technical Achievements**
+- ✅ **Multi-format Processing**: 40+ document types supported
+- ✅ **Production API**: RESTful API with comprehensive documentation
+- ✅ **Modern Frontend**: Next.js 15 with TypeScript and Tailwind CSS
+- ✅ **Cloud Infrastructure**: Scalable Railway deployment with monitoring
+- ✅ **Performance Optimized**: Sub-10 second processing for most documents
+- ✅ **Security Hardened**: HTTPS everywhere, input validation, CORS protection
 
 ---
 
 ## 🤝 **Contributing**
 
-We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
+We welcome contributions! Here's how to get involved:
 
 ### **Development Workflow**
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests and documentation
-5. Submit a pull request
+1. **Fork the repository** and create a feature branch
+2. **Set up local development** environment using instructions above
+3. **Make your changes** with comprehensive tests  
+4. **Follow code standards** (TypeScript, Python type hints, etc.)
+5. **Submit a pull request** with detailed description
+
+### **Contribution Guidelines**
+- **Code Quality**: Maintain high standards with linting and testing
+- **Documentation**: Update docs for any new features or changes
+- **Testing**: Add tests for new functionality
+- **Security**: Follow security best practices
+- **Performance**: Consider impact on processing speed and resource usage
+
+### **Bug Reports & Feature Requests**
+- **Issues**: [GitHub Issues](https://github.com/CLewisMessina/wolfstitch-cloud-dev/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/CLewisMessina/wolfstitch-cloud-dev/discussions)
+- **Security**: Email security@wolfstitch.dev for security-related issues
 
 ---
 
-## 📄 **License**
+## 📞 **Support & Contact**
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## 🎯 **Roadmap**
-
-### **Coming Soon**
-- **Batch Processing**: Upload multiple files simultaneously
-- **Custom Chunking**: User-defined chunk size and overlap
-- **Export Formats**: CSV, TXT, and custom formats
-- **API Authentication**: Secure access with API keys
-
-### **Future Features**
-- **Team Collaboration**: Shared workspaces and projects
-- **Advanced Analytics**: Detailed processing insights
-- **Webhook Integration**: Real-time processing notifications
-- **Enterprise SSO**: Advanced authentication options
-
----
-
-## 📞 **Support**
-
-### **Need Help?**
-- **📖 Documentation**: [API Docs](https://api.wolfstitch.dev/docs)
-- **💬 Issues**: [GitHub Issues](https://github.com/CLewisMessina/wolfstitch-cloud-dev/issues)
-- **📧 Contact**: [clewis@wolfstitch.dev](mailto:clewis@wolfstitch.dev)
+### **Get Help**
+- **📖 API Documentation**: [api.wolfstitch.dev/docs](https://api.wolfstitch.dev/docs)
+- **💬 GitHub Issues**: [Report bugs or request features](https://github.com/CLewisMessina/wolfstitch-cloud-dev/issues)
+- **📧 Email Support**: [support@wolfstitch.dev](mailto:support@wolfstitch.dev)
 - **💼 LinkedIn**: [@CLewisMessina](https://linkedin.com/in/clewismessina)
 
+### **Business Inquiries**
+- **Enterprise Solutions**: [enterprise@wolfstitch.dev](mailto:enterprise@wolfstitch.dev)
+- **Partnership Opportunities**: [partnerships@wolfstitch.dev](mailto:partnerships@wolfstitch.dev)
+- **Press & Media**: [press@wolfstitch.dev](mailto:press@wolfstitch.dev)
+
 ### **Status & Updates**
-- **🔔 System Status**: [status.wolfstitch.dev](https://status.wolfstitch.dev)
+- **🔔 System Status**: Real-time status monitoring
 - **📰 Product Updates**: Follow on LinkedIn for announcements
+- **📊 Release Notes**: Check CHANGELOG.md for detailed version history
+- **🎯 Roadmap**: Track progress on GitHub project boards
 
 ---
 
-## 🏆 **Built With Excellence**
+## 📄 **License & Legal**
 
-**Wolfstitch Cloud** represents the culmination of modern web development practices, enterprise-grade infrastructure, and user-centered design. From initial concept to production deployment, every aspect has been crafted for performance, reliability, and developer experience.
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
 
-### **Technology Stack**
-- **Frontend**: Next.js 15, TypeScript, Tailwind CSS
-- **Backend**: FastAPI, Python, Wolfcore Library
-- **Infrastructure**: Railway, Cloudflare, PostgreSQL, Redis
-- **Development**: Git, GitHub, VS Code, Modern DevOps
+### **Terms of Service**
+By using Wolfstitch Cloud, you agree to our [Terms of Service](https://wolfstitch.dev/terms) and [Privacy Policy](https://wolfstitch.dev/privacy).
 
----
-
-**Ready to transform your documents into AI training data?**
-
-## **🚀 [Start Processing Files Now →](https://wolfstitch.dev)**
+### **Privacy & Security**
+- **Zero Data Retention**: Files are processed and immediately discarded
+- **End-to-End Encryption**: All data transmitted securely via HTTPS
+- **GDPR Compliant**: Full compliance with data protection regulations
+- **SOC 2 Ready**: Enterprise-grade security practices
 
 ---
 
-*Made with ❤️ by [Chris Lewis-Messina](https://linkedin.com/in/clewismessina)*
+## 🏆 **Acknowledgments**
+
+**Wolfstitch Cloud** represents the culmination of modern web development practices, enterprise-grade infrastructure, and user-centered design. Special thanks to:
+
+- **🤖 Claude (Anthropic)** for exceptional development partnership and technical guidance
+- **🚄 Railway** for providing robust, scalable cloud infrastructure  
+- **⚡ Cloudflare** for global content delivery and security services
+- **🌐 The Open Source Community** for foundational tools and libraries
+- **👥 Early Users** for feedback and validation during development
+
+---
+
+## 🎉 **Ready to Transform Your Documents?**
+
+**Wolfstitch Cloud is live and ready to help you prepare AI training datasets from any document format.**
+
+### **🚀 [Start Processing Files Now →](https://wolfstitch.dev)**
+
+---
+
+*Made with ❤️ by [Chris Lewis-Messina](https://linkedin.com/in/clewismessina)*  
+*Last updated: June 25, 2025*
